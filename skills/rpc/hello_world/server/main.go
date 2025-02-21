@@ -2,9 +2,7 @@ package main
 
 import (
 	"fmt"
-	"io"
 	"net"
-	"net/http"
 	"net/rpc"
 	"net/rpc/jsonrpc"
 
@@ -19,14 +17,14 @@ func (h *HelloServer) Hello(request *service.HelloRequest, response *service.Hel
 	return nil
 }
 
-func NewRPCReadWriteCloserFromHTTP(w http.ResponseWriter, r *http.Request) *RPCReadWriteCloser {
-	return &RPCReadWriteCloser{w, r.Body}
-}
+// func NewRPCReadWriteCloserFromHTTP(w http.ResponseWriter, r *http.Request) *RPCReadWriteCloser {
+// 	return &RPCReadWriteCloser{w, r.Body}
+// }
 
-type RPCReadWriteCloser struct {
-	io.Writer
-	io.ReadCloser
-}
+// type RPCReadWriteCloser struct {
+// 	io.Writer
+// 	io.ReadCloser
+// }
 
 func main() {
 	// 1.把服务对象注册到rpc框架
