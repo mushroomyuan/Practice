@@ -2,32 +2,23 @@ package main
 
 import (
 	"fmt"
-	"net/rpc"
+
+	"github.com/mushroomyuan/Practice/skills/rpc/hello_world/service"
 )
 
-type HelloRequest struct {
-	MyName string `json:"my_name"`
-}
-
-type HelloResponse struct {
-	Message string `json:"message"`
-}
-
 func main() {
-	conn, err := rpc.Dial("tcp", "127.0.0.1:1234")
+	client, err := service.NewClient()
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	defer conn.Close()
 
-	req := &HelloRequest{
+	req := &service.HelloRequest{
 		MyName: "bob",
 	}
-	resp := &HelloResponse{}
+	resp := &service.HelloResponse{}
 
-	err = conn.Call("HelloService.Hello", req, resp)
-	if err != nil {
+	if err := client.Hello(req, resp); err != nil {
 		fmt.Println(err)
 	}
 	fmt.Println(resp.Message)

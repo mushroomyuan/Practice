@@ -4,35 +4,22 @@ import (
 	"fmt"
 	"net"
 	"net/rpc"
+
+	"github.com/mushroomyuan/Practice/skills/rpc/hello_world/service"
 )
 
-// 实现业务功能
-// req := &HelloRequest{}
-// resp := &HelloResponse{}
-// err := &HelloServiceImpl{}.Hello(req, resp)
-// net/rpc
-// 1. 写好的对象， 注册给RPC Server
-// 2. 再把RPC Server 启动起来
-type HelloServiceImpl struct {
-}
-
-type HelloRequest struct {
-	MyName string `json:"my_name"`
-}
-
-type HelloResponse struct {
-	Message string `json:"message"`
+type HelloServer struct {
 }
 
 // HTTP Handler
-func (h *HelloServiceImpl) Hello(request *HelloRequest, response *HelloResponse) error {
+func (h *HelloServer) Hello(request *service.HelloRequest, response *service.HelloResponse) error {
 	response.Message = "hello:" + request.MyName
 	return nil
 }
 
 func main() {
 	// 1.把服务对象注册到rpc框架
-	if err := rpc.RegisterName("HelloService", &HelloServiceImpl{}); err != nil {
+	if err := rpc.RegisterName("HelloService", &HelloServer{}); err != nil {
 		fmt.Println(err)
 		return
 	}
