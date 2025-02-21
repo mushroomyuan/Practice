@@ -12,6 +12,7 @@ func main() {
 		fmt.Println(err)
 		return
 	}
+	defer client.Close()
 
 	req := &service.HelloRequest{
 		MyName: "bob",

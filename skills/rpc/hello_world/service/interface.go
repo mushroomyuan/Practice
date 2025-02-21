@@ -2,6 +2,7 @@ package service
 
 type HelloService interface {
 	Hello(request *HelloRequest, response *HelloResponse) error
+	Close() error
 }
 
 type HelloRequest struct {

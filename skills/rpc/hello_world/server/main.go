@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net"
 	"net/rpc"
+	"net/rpc/jsonrpc"
 
 	"github.com/mushroomyuan/Practice/skills/rpc/hello_world/service"
 )
@@ -11,7 +12,6 @@ import (
 type HelloServer struct {
 }
 
-// HTTP Handler
 func (h *HelloServer) Hello(request *service.HelloRequest, response *service.HelloResponse) error {
 	response.Message = "hello:" + request.MyName
 	return nil
@@ -38,7 +38,10 @@ func main() {
 			return
 		}
 		// 4.将接收的消息发送给rpc框架
-		go rpc.ServeConn(conn)
+
+		// go rpc.ServeConn(conn)
+		// json格式的编解码器：
+		go rpc.ServeCodec(jsonrpc.NewServerCodec(conn)) //
 	}
 
 }
