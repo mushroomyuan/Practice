@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"net"
+	"net/http"
 	"net/rpc"
 	"net/rpc/jsonrpc"
 
@@ -17,12 +19,22 @@ func (h *HelloServer) Hello(request *service.HelloRequest, response *service.Hel
 	return nil
 }
 
+func NewRPCReadWriteCloserFromHTTP(w http.ResponseWriter, r *http.Request) *RPCReadWriteCloser {
+	return &RPCReadWriteCloser{w, r.Body}
+}
+
+type RPCReadWriteCloser struct {
+	io.Writer
+	io.ReadCloser
+}
+
 func main() {
 	// 1.把服务对象注册到rpc框架
 	if err := rpc.RegisterName("HelloService", &HelloServer{}); err != nil {
 		fmt.Println(err)
 		return
 	}
+
 	// 2.启创建监听对象
 	listenner, err := net.Listen("tcp", ":1234")
 	if err != nil {
@@ -44,4 +56,10 @@ func main() {
 		go rpc.ServeCodec(jsonrpc.NewServerCodec(conn)) //
 	}
 
+	// http.HandleFunc("/jsonrpc", func(w http.ResponseWriter, r *http.Request) {
+
+	// 	conn := NewRPCReadWriteCloserFromHTTP(w, r)
+	// 	rpc.ServeRequest(jsonrpc.NewServerCodec(conn))
+	// })
+	// http.ListenAndServe(":1234", nil)
 }
