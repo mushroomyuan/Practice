@@ -15,7 +15,23 @@ message HelloResponse {
     string message = 1;
 }
 
+message ChatRequest {
+    int64 id = 1;
+    string message = 2;
+}
+
+message ChatResponse {
+    int64 id = 1;
+    bool is_success = 2;
+    string message = 3;
+} 
+
 // grpc接口声明
 service HelloService {
     rpc SayHello (HelloRequest) returns (HelloResponse);
+    // 双向流接口
+    rpc Chat (stream ChatRequest) returns (stream ChatResponse);
 }
+
+
+
