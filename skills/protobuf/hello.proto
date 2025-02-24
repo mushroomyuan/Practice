@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package hello;
+
+option go_package="github.com/mushroomyuan/Practice/skills/protobuf";
+
+message HelloRequest {
+    string my_name = 1;
+}
+
+message HelloResponse {
+    string message = 1;
+}
