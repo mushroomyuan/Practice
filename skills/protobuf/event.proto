@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package hello;
+
+import "google/protobuf/any.proto";
+
+option go_package="github.com/mushroomyuan/Practice/skills/protobuf";
+
+
+
+message Event {
+    EVENT_TYPE type =1;
+    string message =2;
+    repeated google.protobuf.Any detail = 3;
+}
+
+enum EVENT_TYPE {
+   ECS=0;
+   RDS=1;
+}
+
+message EVENT_ECS {
+    string message =1;
+}
+
+message EVENT_RDS {
+    string message =1;
+}

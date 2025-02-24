@@ -4,10 +4,26 @@ package hello;
 
 option go_package="github.com/mushroomyuan/Practice/skills/protobuf";
 
+// import "home/yfz/Practice/skills/protobuf/event.proto";
+import "event.proto";
+
 message HelloRequest {
     string my_name = 1;
+    int64 my_age=2;
+    repeated int64 magic_num =3;
+    map<string,string> extras =4;
 }
 
 message HelloResponse {
     string message = 1;
 }
+
+enum DESCRIB_BY {
+    ID = 0;
+    NAME =1;
+}
+
+message EventSet {
+    repeated Event item=1;
+}
+
